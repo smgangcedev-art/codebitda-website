@@ -1,0 +1,50 @@
+Codebitda C++ 2.0.9 — Mac installation
+macOS 13 or later. Apple Silicon (M1 or later) only. Intel Macs are not supported.
+
+1. Download the C++ Mac DMG above and open it.
+2. Open 코드빚다-C++.app inside the DMG. If a security warning appears, see the guidance below.
+3. In 코드빚다 C++ 환경설정 (C++ Setup), click 설치 시작 (Start installation) to install the app in Applications.
+4. If the tools are missing, click Apple 실행 도구 설치 (Install Apple tools) and complete the Apple installer. An internet connection may be required.
+5. Click 설치 완료 여부 확인 (Check installation). After the C++ check passes, click 앱 실행 (Open app).
+6. From then on, open 코드빚다-C++ from Applications. You can eject the installation disk.
+
+Security warnings
+This version is ad-hoc signed and is not notarized by Apple.
+Try opening 코드빚다-C++ once, then check System Settings → Privacy & Security → Open Anyway. Make sure the app name matches 코드빚다-C++. On a school-managed Mac, contact your administrator if you cannot allow it.
+If the app is reported as damaged, download and reinstall it from this website. If the message persists, send the error and your macOS version to your instructor.
+
+Full guide: https://smgangcedev-art.github.io/codebitda-website/codebitda-cpp-en.html#mac-install
+
+Automatic updates
+If you use 2.0.0, install 2.0.9 manually once. Versions 2.0.1 through 2.0.8 download this update automatically from the home screen.
+Save or submit your work, return home, and choose Update & restart. The app will not restart automatically during exams, assignments, or authoring.
+Update signatures and file integrity are verified. If startup fails, the updater attempts to restore the previous app.
+Install in Applications using your own account. If permissions or macOS security block the update, install the latest DMG manually.
+
+2.0.6 classroom workflow
+Instructors register an XLSX or UTF-8 CSV roster for each exam. Keep student numbers as text, including leading zeros.
+The roster persists on the server and is shared with the instructor's assistants. Only the instructor can replace it.
+Students are matched by student number; a different name spelling does not block entry.
+Submitting freezes the answers and results. The app retries failed uploads and waits for instructor/assistant confirmation before enabling Exit.
+Instructors and assistants can select individual/all students to switch active exams to assignment mode. Submitted answers stay locked.
+Encrypted automatic backups and approval-based recovery remain in place; no new final-submission signature or encryption is added.
+
+2.0.6: Five theory question types; Save or ⌘S saves all theory answers and code. In Study mode, save and reopen the learning JSON to continue.
+
+2.0.6: Improved long Unicode temporary paths and submission/exit handling. Install in Applications.
+
+Mac 2.0.6 · Theory HTML results and room management  Theory submissions include JSON and HTML. Coding results retain source files, notebooks, and output images; theory questions do not create empty code files.  Instructor final results show student answers and scores alongside correct answers, accepted alternatives, and grading criteria. Answer keys remain hidden from student packages.  Professors can delete their own closed or archived rooms after confirming the room name. Drive files, courses, and rosters are preserved.
+
+Mac 2.0.7 · Exam references and published answers
+Open your PDFs and PowerPoint slides in separate tabs. Press ⌘F to find a page or slide. Select text in a PDF, press ⌘C, then paste it into your C++ editor with ⌘V. Scanned pages without selectable text cannot be searched or copied.
+Mac Quick Look opens supported PPT and PPTX files. If a presentation does not open, export it as PDF and try again.
+After joining with your class code and student number, check the roster name in the top left. Use the Answer Code tab to view the solution once your professor publishes it.
+Instructors can find students waiting for submission confirmation first, sort by name or student number, and allow individual students to exit. The professor who owns the room can download its diagnostic logs. An external window detection is logged without locking the exam.
+
+Mac 2.0.8 · Split view and question-by-question answer release
+Read theory questions on the left and references on the right. Each PDF or slide deck remembers its zoom (50–300%) and reading position. Use ⌘F to find a page and ⌘C/⌘V to copy selectable PDF text into your code.
+Professors can attach an answer JSON file when opening a room. Students see an answer in the Published Answer tab only after the professor releases that question. Publication does not change the grading criteria.
+Students waiting for submission confirmation appear first in the attendance view. Expand the details of a forced exit to see who processed it and when.
+
+Mac 2.0.9 · Document zoom and code references
+In the References tab, read the question on the left and the document on the right. Hold Ctrl or ⌘ and scroll up to zoom in on a PDF or slide, or down to zoom out. Switch to My Code to edit your answer. Open TXT, CPP files as read-only references.

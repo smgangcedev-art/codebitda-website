@@ -1,0 +1,38 @@
+const $=s=>document.querySelector(s),escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let language=document.body.dataset.bankLanguage||'전체';let uiEnglish=new URLSearchParams(location.search).get('lang')==='en';const tr=(ko,en)=>uiEnglish?en:ko;const setTitles={ 'java-260921':'Strings, Conditions and Loops','java-260930':'Constructors, Exceptions and a Repeating Menu','java-261012':'Sims: Inheritance, Upcasting and Downcasting','java-261019':'Java Basics, Classes and Interfaces','java-261021':'Java Midterm: Classes and Object-Oriented Programming','cpp-260923':'Functions, Arrays and a Repeating Menu','cpp-260930':'Comparing and Swapping Arrays with Pointers','cpp-261007':'Sim: Constructors and Destructors','cpp-261014':'YoungSim and ChildSim Inheritance','cpp-261026':'Pointers, References and Dynamic Objects','cpp-261028':'C++ Midterm: Pointers and Object-Oriented Programming','ai-261008':'Tensor Means and a First Chart','ai-261020':'TensorFlow Basics, Regression and Charts','ai-261022':'AI Midterm: Tensor Operations and Regression'};const setTitle=x=>uiEnglish?(x.titleEn||setTitles[x.id]||x.title):x.title;const questionTitle=q=>uiEnglish?(q.titleEn||q.title):q.title;const kindName=k=>uiEnglish?({'수업 문제':'Lesson','연습문제':'Practice','중간고사':'Midterm'}[k]||k):k;
+function render(){const term=$('#search').value.trim().toLowerCase(),kind=$('#kind').value;const selected=BANK.filter(x=>(language==='전체'||x.language===language)&&(kind==='전체'||x.kind===kind)&&[x.title,setTitle(x),...x.questions.map(q=>q.title+' '+(q.titleEn||''))].join(' ').toLowerCase().includes(term));$('#count').textContent=tr(`${selected.length}개 묶음 · ${selected.reduce((n,x)=>n+x.questions.length,0)}개 문제`,`${selected.length} sets · ${selected.reduce((n,x)=>n+x.questions.length,0)} questions`);$('#catalog').innerHTML=selected.map(x=>`<article class="row"><div class="lang ${x.language}">${x.language}</div><div><span class="meta">${kindName(x.kind)} · ${x.date.slice(0,4)}.${x.date.slice(4,6)}.${x.date.slice(6)} · ${x.questions.length}${tr("문제",x.questions.length===1?" question":" questions")}</span><h2>${escapeHTML(setTitle(x))}</h2><p class="summary">${escapeHTML(x.questions.map(questionTitle).join(' · '))}</p></div><div class="actions"><button data-open="${x.id}">${tr("문제 · 정답 보기","View questions & answers")}</button><a class="download" href="${x.zip}?v=${x.version||'20261029-study'}" download>${tr("ZIP 다운로드 ↓","Download ZIP ↓")}</a></div></article>`).join('')||`<p class="note">${tr('검색 결과가 없습니다. 다른 주제로 검색해 주세요.','No results. Try another topic.')}</p>`;}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{language=b.dataset.lang;document.querySelectorAll('[data-lang]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});render();});$('#search').oninput=render;$('#kind').onchange=render;
+$('#catalog').onclick=e=>{const b=e.target.closest('[data-open]');if(!b)return;const s=BANK.find(x=>x.id===b.dataset.open);$('#view-title').textContent=setTitle(s);$('#view-body').innerHTML=s.questions.map((q,i)=>`<section class="problem"><h3>${i+1}. ${escapeHTML(questionTitle(q))}</h3><div class="columns"><div><h4>${tr("문제","Question")}</h4><div class="copy">${escapeHTML(uiEnglish?(q.descriptionEn||q.description):q.description)}</div>${q.descriptionEn?`<details><summary>${tr("English problem","한국어 문제")}</summary><div class="copy">${escapeHTML(uiEnglish?q.description:q.descriptionEn)}</div></details>`:''}</div><div><details><summary>${tr("시작코드 보기","View starter code")}</summary><pre class="code">${escapeHTML(q.starterCode)}</pre></details><details open><summary>${tr("정답 코드 보기","View answer code")}</summary><pre class="code">${escapeHTML(q.answer)}</pre></details><details><summary>${tr("예시 출력 보기","View sample output")}</summary><pre class="copy">${escapeHTML(q.expectedOutput)}</pre></details></div></div></section>`).join('');$('#viewer').showModal();$('#viewer').scrollTop=0;};$('#close').onclick=()=>$('#viewer').close();render();
+
+const originalText=new Map();
+function updateLanguage(){
+ document.documentElement.lang=uiEnglish?'en':'ko';
+ document.querySelectorAll('[data-ui-lang]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.uiLang==='en')===uiEnglish)));
+ document.querySelectorAll('header a,footer a,.bank-nav a').forEach(a=>{
+  if(!a.dataset.koHref)a.dataset.koHref=a.getAttribute('href');
+  const href=a.dataset.koHref;
+  if(uiEnglish){a.setAttribute('href',href.startsWith('codebitda-bank')?href+'?lang=en':href.replace(/\.html$/, '-en.html'));}
+  else a.setAttribute('href',href);
+ });
+ document.querySelector('section[aria-label]')?.setAttribute('aria-label',tr('문제 찾기','Find questions'));
+ document.querySelector('.bank-nav')?.setAttribute('aria-label',tr('언어별 필터','Filter by programming language'));
+ document.querySelector('meta[name="description"]')?.setAttribute('content',tr('C++, Java, AI 수업 문제와 연습문제. 문제와 정답을 함께 읽고 내려받으세요.','C++, Java and AI lessons and practice. Browse and download questions with answers.'));
+ const topic=document.body.dataset.bankLanguage;const scope=topic==='전체'?'All':topic;
+ document.title=tr((topic==='전체'?'전체':topic)+' 공개 문제은행 | 코드빚다',scope+' Question Bank | Codebitda');
+ const replacements={
+ '.hero h1':scope+'<br>Question Bank',
+ '.intro':(topic==='전체'?'C++, Java and AI':scope)+' lessons and practice questions.<br>Browse and download questions with answers.',
+ '.stats':(topic==='전체'?'15 sets · 59 questions':topic==='Java'?'6 sets · 22 questions':topic==='AI'?'3 sets · 16 questions':'6 sets · 21 questions')+' · Questions + answers',
+ '.note':'Extract the ZIP and open 문제.json in Study mode in the matching app. No login, instructor approval or enrollment is required. Save your code locally. If Study mode is missing, update to a version that supports it.',
+ 'footer a':'Privacy policy'
+ };
+ for(const [selector,en] of Object.entries(replacements)){const e=$(selector);if(!e)continue;if(!originalText.has(e))originalText.set(e,e.innerHTML);e.innerHTML=uiEnglish?en:originalText.get(e);}
+ document.querySelectorAll('header nav a').forEach(a=>{if(!originalText.has(a))originalText.set(a,a.textContent);const t=originalText.get(a);a.textContent=uiEnglish?(t.includes('이용')?'User guide':t.includes('선택')?'All question banks':t.replace('코드빚다 앱 소개','Codebitda apps').replace(' 앱 소개',' app')):t;});
+ for(const [selector,ko,en] of [['.search','주제 검색','Search topics'],['.kind','분류','Category']]){const el=$(selector);for(const n of el.childNodes)if(n.nodeType===3&&n.textContent.trim()){n.textContent=tr(ko,en);break;}}
+ $('#search').placeholder=tr('포인터, 생성자, 회귀…','Pointers, constructors, regression…');
+ for(const opt of $('#kind').options){if(!opt.dataset.original)opt.dataset.original=opt.textContent;opt.value=opt.dataset.original;opt.textContent=opt.value==='전체'?tr('전체','All'):kindName(opt.value);}
+ const all=document.querySelector('[data-lang="전체"]');if(all)all.textContent=tr('전체','All');
+ $('#close').textContent=tr('닫기 ×','Close ×');$('#close').setAttribute('aria-label',tr('미리보기 닫기','Close preview'));
+ render();
+}
+document.querySelectorAll('[data-ui-lang]').forEach(b=>b.onclick=()=>{uiEnglish=b.dataset.uiLang==='en';const url=new URL(location.href);url.searchParams.set('lang',uiEnglish?'en':'ko');history.replaceState(null,'',url);if($('#viewer').open)$('#viewer').close();updateLanguage();});
+updateLanguage();
