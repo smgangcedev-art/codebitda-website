@@ -16,7 +16,7 @@
 학교에서 관리하는 Mac은 담당 관리자에게 문의하세요.
 손상 메시지가 계속되면 다시 다운로드·설치한 뒤, 오류 화면과 macOS 버전을 담당 교강사에게 전달해 주세요.
 
-다운로드 및 자세한 안내: https://smgangcedev-art.github.io/codebitda-website/codebitda-cpp.html#mac-downloads
+다운로드 및 자세한 안내: https://codebitda.com/codebitda-cpp.html#mac-downloads
 Apple 안내: https://support.apple.com/ko-kr/102445
 
 자동 업데이트
