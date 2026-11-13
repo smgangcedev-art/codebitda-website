@@ -1,4 +1,4 @@
-Codebitda Java 2.0.11 — Mac installation
+Codebitda Java 2.0.12 — Mac installation
 macOS 13 or later. Apple Silicon (M1 or later) only. Intel Macs are not supported.
 
 1. Download the Java Mac DMG above and open it.
@@ -14,7 +14,7 @@ If the app is reported as damaged, download and reinstall it from this website. 
 Full guide: https://codebitda.com/codebitda-java-en.html#mac-install
 
 Automatic updates
-If you use 2.0.0, install 2.0.11 manually once. Versions 2.0.1 through 2.0.10 download this update automatically from the home screen.
+If you use 2.0.0, install 2.0.12 manually once. Versions 2.0.1 through 2.0.11 download this update automatically from the home screen.
 Save or submit your work, return home, and choose Update & restart. The app will not restart automatically during exams, assignments, or authoring.
 Update signatures and file integrity are verified. If startup fails, the updater attempts to restore the previous app.
 Install in Applications using your own account. If permissions or macOS security block the update, install the latest DMG manually.
@@ -52,3 +52,6 @@ Select a backup and request recovery. Instructors and teaching assistants can ap
 
 Mac 2.0.11 · Question screen clock
 The clock in the upper-right corner of the question screen shows local time in hours, minutes, and seconds, including while you read a PDF.
+
+Mac 2.0.12
+The macOS menu bar now shows 코드빚다-JAVA. Assignment mode activates the grading and submission controls after you join.
