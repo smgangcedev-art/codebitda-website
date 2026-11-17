@@ -1,0 +1,33 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>강의 대시보드</title><style>
+:root{--bg:#f3f5f9;--card:#fff;--line:#d6dce6;--text:#1f2937;--muted:#6b7280;--accent:#2563eb;--red:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--text:#e5e7eb;--muted:#94a3b8;--accent:#60a5fa;--red:#f87171}}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif}
+form{max-width:340px;margin:18vh auto 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+h1{font-size:18px;margin:0 0 12px}input[type=password]{width:100%;box-sizing:border-box;padding:10px;font-size:16px;
+border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--text)}
+button{margin-top:10px;width:100%;padding:10px;font-size:16px;border:0;border-radius:6px;background:var(--accent);color:#fff}
+label{display:block;margin-top:8px;color:var(--muted);font-size:13px}#err{color:var(--red);min-height:1.5em;margin-top:6px}
+</style></head><body>
+<form id="f"><h1>강의 대시보드</h1><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus>
+<label><input id="keep" type="checkbox"> 이 기기에서 기억</label><button>열기</button><div id="err"></div></form>
+<script>
+const D={"salt": "g0ShDsGpR5GqZsH5gmmGZQ==", "iv": "YxWUIhnGYa0u2uH0", "ct": "DfCZc79NjiIkkw5Tdo/Rx07HGrKlhHeG4uYNTI3qnTmkFMTJMvarE2eeuQEdcxwYtJvgKzMp+0/q5ekdmgniDhSrIQociBKErRfc5qV9FQPOLtLDg9OPy3k+v7fqo2Jk6jy54dVHUQlZXnZ4s8DuaP1G/JeNeGrLdUUUiw==", "iter": 250000};
+const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function open_(pw){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b(D.salt),iterations:D.iter,hash:'SHA-256'},k,
+    {name:'AES-GCM',length:256},false,['decrypt']);
+  const out=await crypto.subtle.decrypt({name:'AES-GCM',iv:b(D.iv)},key,b(D.ct));
+  const html=new TextDecoder().decode(out);
+  document.open();document.write(html);document.close();
+}
+let saved=null;try{saved=localStorage.getItem('kmu_dash_pw')}catch(e){}
+if(saved){open_(saved).catch(()=>{try{localStorage.removeItem('kmu_dash_pw')}catch(e){}})}
+document.getElementById('f').addEventListener('submit',async ev=>{
+  ev.preventDefault();const pw=document.getElementById('pw').value;
+  try{await open_(pw);try{if(document.getElementById('keep')?.checked)localStorage.setItem('kmu_dash_pw',pw)}catch(e){}}
+  catch(e){document.getElementById('err').textContent='비밀번호가 맞지 않습니다.'}
+});
+</script></body></html>
